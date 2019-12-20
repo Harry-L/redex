@@ -33,7 +33,7 @@ Stats RegAllocPass::allocate(
   }
   auto& code = *m->get_code();
   TRACE(REG, 5, "regs:%d code:\n%s", code.get_registers_size(), SHOW(&code));
-  try {
+  //try {
     live_range::renumber_registers(&code, /* width_aware */ true);
     // The transformations below all require a CFG. Build it once
     // here instead of requiring each transform to build it.
@@ -43,22 +43,22 @@ Stats RegAllocPass::allocate(
     TRACE(REG, 5, "After alloc: regs:%d code:\n%s", code.get_registers_size(),
           SHOW(&code));
     return allocator.get_stats();
-  } catch (const std::exception& e) {
-    std::cerr << "Failed to allocate " << SHOW(m) << ": " << e.what()
-              << std::endl;
-    print_stack_trace(std::cerr, e);
+  /* } catch (const std::exception& e) { */
+  /*   std::cerr << "Failed to allocate " << SHOW(m) << ": " << e.what() */
+  /*             << std::endl; */
+  /*   print_stack_trace(std::cerr, e); */
 
-    std::string cfg_tmp;
-    if (code.cfg_built()) {
-      cfg_tmp = SHOW(code.cfg());
-      code.clear_cfg();
-    }
-    std::cerr << "As s-expr: " << std::endl
-              << assembler::to_s_expr(&code) << std::endl;
-    std::cerr << "As CFG: " << std::endl << cfg_tmp << std::endl;
+  /*   std::string cfg_tmp; */
+  /*   if (code.cfg_built()) { */
+  /*     cfg_tmp = SHOW(code.cfg()); */
+  /*     code.clear_cfg(); */
+  /*   } */
+  /*   std::cerr << "As s-expr: " << std::endl */
+  /*             << assembler::to_s_expr(&code) << std::endl; */
+  /*   std::cerr << "As CFG: " << std::endl << cfg_tmp << std::endl; */
 
-    throw;
-  }
+  /*   throw; */
+  /* } */
 }
 
 void RegAllocPass::run_pass(DexStoresVector& stores,
